@@ -14,6 +14,7 @@ const initialState = {
   words: [],
 };
 // 액션 생성 함수
+//여기에 인자로 들어가는 값(words_list)을 리듀서에서 action.word.words_list 로 통일 시켜줘야함.
 export const loadWords = (words_list) => {
   return { type: LOAD, words_list };
 };
