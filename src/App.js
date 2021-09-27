@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { Route, Switch } from "react-router-dom";
-import { useDispatch } from "react-redux";
 
 //
 
@@ -34,7 +33,6 @@ const Container = styled.div`
   border-radius: 50px;
   border: 1px solid #ddd;
   overflow: auto;
-
   justify-content: center;
   display: flex;
 `;
@@ -46,7 +44,6 @@ const Title = styled.h1`
   margin-bottom: 40px;
   margin-top: -16px;
   position: fixed;
-  /* background-color: rgba(255, 255, 255, 0.8);  */
   background-color: white;
   width: 53em;
   border-radius: 50px;

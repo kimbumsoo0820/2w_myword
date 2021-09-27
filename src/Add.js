@@ -1,10 +1,8 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 //firebase
-import { db } from "./firebase";
-import { collection, addDoc } from "@firebase/firestore";
 import { addWords, addWordsFB } from "./redux/modules/word";
 import styled from "styled-components";
 
@@ -24,7 +22,7 @@ const Add = (props) => {
       <p>단어 예시 </p>
       <Inputs ref={ex_ref} type="text" />
 
-      <button
+      <Button_ox
         onClick={() => {
           dispatch(addWords(word_ref.current.value));
           dispatch(
@@ -37,17 +35,17 @@ const Add = (props) => {
 
           history.push("/");
         }}
-        style={{
-          padding: "8px 24px",
-          marginTop: "20px",
-          backgroundColor: " #a673ff",
-          borderRadius: "30px",
-          border: "skyblue",
-          color: "white",
-        }}
       >
         추가하기
-      </button>
+      </Button_ox>
+      <Button_ox
+        onClick={() => {
+          history.push("/");
+        }}
+        style={{ marginLeft: "20px" }}
+      >
+        뒤로가기
+      </Button_ox>
     </div>
   );
 };
@@ -58,6 +56,15 @@ const Inputs = styled.input`
   border: 1px solid #a673ff;
   border-radius: 30px;
   width: 100%;
+`;
+
+const Button_ox = styled.button`
+  padding: 8px 24px;
+  margin-top: 20px;
+  background-color: #a673ff;
+  border-radius: 30px;
+  border: skyblue;
+  color: white;
 `;
 
 export default Add;

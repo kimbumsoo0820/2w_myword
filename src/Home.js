@@ -1,27 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router";
-import {
-  border,
-  width,
-} from "../../SPARTA_REACT/bucket_list/node_modules/@mui/system";
+
 import { useHistory } from "react-router-dom";
 
 import { loadWordsFB } from "./redux/modules/word";
+import Modal from "react-modal";
+
+Modal.setAppElement("#root");
 
 const Home = ({ list }) => {
-  const word_list = useSelector((state) => state.word.word_list);
   const dispatch = useDispatch();
-  console.log(word_list);
   const history = useHistory();
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalWord, setModalWord] = useState({
+    word: "",
+    explanation: "",
+    ex: "",
+  });
 
   React.useEffect(() => {
     dispatch(loadWordsFB());
   }, []);
 
   const _word_data = useSelector((state) => state.word.words);
-  console.log(_word_data);
 
   return (
     <div>
@@ -29,23 +32,58 @@ const Home = ({ list }) => {
         _word_data.map((dictionary, index) => {
           return (
             <Cards key={index}>
-              <Words>
-                <p>단어</p>
-                <p style={{ border: "1px solid #ddd" }}>{dictionary.word}</p>
-                <p>설명</p>
-                <p style={{ border: "1px solid #ddd" }}>
-                  {dictionary.explanation}
-                </p>
-                <p>예시</p>
-                <p
-                  style={{ border: "1px solid #ddd", color: "lightsteelblue" }}
-                >
+              <Words
+                onClick={() => {
+                  setModalIsOpen(true);
+                  setModalWord(dictionary);
+                }}
+              >
+                <Text_title>단어</Text_title>
+                <Text_Word style={{}}>{dictionary.word}</Text_Word>
+                <Text_title>설명</Text_title>
+                <Text_p style={{}}>{dictionary.explanation}</Text_p>
+                <Text_title>예시</Text_title>
+                <Text_p style={{ color: "lightsteelblue" }}>
                   {dictionary.ex}
-                </p>
+                </Text_p>
               </Words>
             </Cards>
           );
         })}
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        style={{
+          overlay: {
+            backgroundColor: "rgba(209, 209, 209,0.7) ",
+          },
+          content: {
+            margin: "auto",
+            width: "500px",
+            height: "700px",
+            justifyContent: "center",
+            alignContent: "center",
+            overflow: "auto",
+          },
+        }}
+      >
+        <h2>Detail of My Dictionary</h2>
+        <Text_title2>단어</Text_title2>
+        <h2 style={{}}>{modalWord.word}</h2>
+        <Text_title2>설명</Text_title2>
+        <p style={{}}>{modalWord.explanation}</p>
+        <Text_title2>예시</Text_title2>
+        <p style={{}}>{modalWord.ex}</p>
+
+        <Modal_button
+          onClick={() => {
+            setModalIsOpen(false);
+          }}
+        >
+          Close
+        </Modal_button>
+      </Modal>
+
       <AddButton
         onClick={() => {
           history.push("/add");
@@ -78,8 +116,8 @@ const Words = styled.div`
   border: 1px solid #ddd;
   padding: 10px;
   height: 250px;
-  margin: 0;
   margin: 20px;
+  cursor: pointer;
 `;
 
 const Cards = styled.div`
@@ -88,5 +126,36 @@ const Cards = styled.div`
   justify-content: center;
   align-items: center;
   float: left;
+`;
+
+const Text_Word = styled.h2`
+  overflow: hidden;
+  width: 195px;
+  height: 27px;
+  padding: 2px;
+`;
+
+const Text_p = styled.p`
+  overflow: hidden;
+  width: 195px;
+  height: 23px;
+  padding: 2px;
+`;
+
+const Text_title = styled.p`
+  font-size: 11px;
+`;
+const Text_title2 = styled.p`
+  font-size: 11px;
+  color: #a673ff;
+`;
+
+const Modal_button = styled.button`
+  padding: 8px 24px;
+  margin-top: 20px;
+  background-color: #a673ff;
+  border-radius: 30px;
+  border: skyblue;
+  color: white;
 `;
 export default Home;
