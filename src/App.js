@@ -2,8 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { Route, Switch } from "react-router-dom";
 
-//
-
 import Home from "./Home";
 import Add from "./Add";
 

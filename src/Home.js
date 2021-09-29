@@ -1,30 +1,54 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 
 import { useHistory } from "react-router-dom";
 
-import { loadWordsFB } from "./redux/modules/word";
+import {
+  loadWordsFB,
+  updateWords,
+  deleteWords,
+  updateWordsFB,
+  deleteWordsFB,
+} from "./redux/modules/word";
 import Modal from "react-modal";
 
 Modal.setAppElement("#root");
 
-const Home = ({ list }) => {
+const Home = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalWord, setModalWord] = useState({
+    id: "",
     word: "",
     explanation: "",
     ex: "",
   });
+  let page = 1;
+  let data_list = [];
 
+  //   console.log(modalWord);
+
+  // https://ko-de-dev-green.tistory.com/18   useeffect 에 관한 설명
   React.useEffect(() => {
     dispatch(loadWordsFB());
   }, []);
 
-  const _word_data = useSelector((state) => state.word.words);
+  const _word_data = useSelector((state) => state.word.words); // state.word(파일이름).words(word.js에 있는 리덕스 저장소에 있는 배열 이름)
+
+  window.onscroll = function () {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+      page += 1;
+      console.log(page);
+    }
+  };
+
+  // for (let i = 0; i < page * 10; i++) {
+  //     const obj = {};
+  //     data_list[i] = _word_data[i];
+  //   }
 
   return (
     <div>
@@ -60,7 +84,7 @@ const Home = ({ list }) => {
           content: {
             margin: "auto",
             width: "500px",
-            height: "700px",
+            height: "600px",
             justifyContent: "center",
             alignContent: "center",
             overflow: "auto",
@@ -80,7 +104,17 @@ const Home = ({ list }) => {
             setModalIsOpen(false);
           }}
         >
-          Close
+          뒤로 가기
+        </Modal_button>
+
+        <Modal_button
+          onClick={() => {
+            dispatch(deleteWordsFB(modalWord.id));
+            setModalIsOpen(false);
+            // window.location.reload();
+          }}
+        >
+          삭제 하기
         </Modal_button>
       </Modal>
 
